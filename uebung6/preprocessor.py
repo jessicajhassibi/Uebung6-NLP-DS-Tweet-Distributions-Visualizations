@@ -18,7 +18,6 @@ class TweetPreprocessor():
         self.vocab = 0
         self.vecsize = 0
         self.vector_dict = self.load_vectors()
-
         self.embeddings = self.load_vectors()
         self.nlp = spacy.load("de_core_news_sm")
 
@@ -143,9 +142,9 @@ class TweetPreprocessor():
 
                         tweet["predicted-sentiment"] = pred_class.item()
 
-                        print("Text:", tweet["text"])
+                        #print("Text:", tweet["text"])
                         # Print Predicted Class
-                        print("Label for Text:", str(pred_class.item()))
+                        #print("Label for Text:", str(pred_class.item()))
 
                     new_tweets_list.append(tweet)
 

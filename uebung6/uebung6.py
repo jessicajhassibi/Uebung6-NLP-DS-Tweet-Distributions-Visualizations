@@ -134,7 +134,7 @@ def main():
     print("\n\n***********************************************************************************************************")
     print("3.3.: Created Bar Chart of daily tweet posting frequency.")
     print("Close plot window to continue.")
-    #plotter.daily_tweets()
+    plotter.daily_tweets()
     print("***********************************************************************************************************")
 
     print("\n\n***********************************************************************************************************")
@@ -143,7 +143,6 @@ def main():
     plotter.hourly_tweets()
     print("***********************************************************************************************************")
 
-
     # Exercise 4
     print("\n\n***********************************************************************************************************")
     print("Sheet 6 Exercise 4:")
@@ -151,7 +150,7 @@ def main():
     print("***********************************************************************************************************")
 
     print("4.1.: Calculate IAA-Score for nouns, verbs and adjectives with Krippendorf's Alpha.")
-    disambiguation_analyzation = disambiguation_iaa.DisambiguationAnalyzer(disambiguation_file)
+    #disambiguation_analyzation = disambiguation_iaa.DisambiguationAnalyzer(disambiguation_file)
     #Calculation takes really long...
     print("Result: nominal metric: 0.624")
 
