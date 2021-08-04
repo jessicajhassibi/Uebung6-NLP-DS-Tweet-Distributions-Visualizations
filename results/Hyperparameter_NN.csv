@@ -1,0 +1,2 @@
+lr,dropout,tweetrep,optimizer,Hiddendim1,Hiddendim2,accuracy,F1-Score
+0.09418547638387147,0.2,tweetmin,Adagrad,31,43,50.66901408450704,0.5047455625160896
