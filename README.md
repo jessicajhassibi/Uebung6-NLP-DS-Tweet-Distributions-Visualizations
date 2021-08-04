@@ -18,6 +18,6 @@ the preprocessing of files for uebung6 ("filtered_test.json" and "Twitter_Datens
 which lie in the data folder. Preprocessed files are in "results".
 
 #### analyzation_helpers.py: 
-Is a new class 
+Is a new class blabla
 
 plotter_uebung6.py
