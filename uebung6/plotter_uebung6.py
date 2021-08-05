@@ -1,5 +1,6 @@
 import json
 import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
 import numpy as np
 import analyzation_helpers
 
@@ -21,7 +22,9 @@ class PlotterUebung6():
         self.most_frequent_hashtags, \
         self.most_frequent_hashtags_sentiments = analyzation_helpers.analyze_most_frequent_hashtags(self.tweets_list)
 
-        self.weekday_frequency = analyzation_helpers.get_tweet_weekday_frequency(self.tweets_list)
+        self.weekday_frequency,\
+            self.hour_frequency = analyzation_helpers.get_tweet_daily_hourly_frequency(self.tweets_list)
+
 
     def sentiment_distribution(self):
         """
@@ -300,9 +303,76 @@ class PlotterUebung6():
         plt.show()
 
     def hourly_tweets(self):
-        pass
+        """
+        Plots the average number of tweets posted in each hour of a full week (a week has 168 hours).
+        Plot will be a bar chart.
+        :return: None
+        """
+        hours = self.hour_frequency.keys()
+        tweets = self.hour_frequency.values()
+
+        labels = range(168)
+        counts = tweets
+        x = np.arange(len(labels))
+
+        fig, ax = plt.subplots()
+        width = 0.4
+        rect = ax.bar(x, counts, width, label=labels)
+
+        hour = 0
+        for j in range(7):
+            if j == 0:
+                color = "peachpuff"
+            elif j == 1:
+                color = "lightgreen"
+            elif j == 2:
+                color = "y"
+            elif j == 3:
+                color = "thistle"
+            elif j == 4:
+                color = "lightsteelblue"
+            elif j == 5:
+                color = "c"
+            elif j == 6:
+                color = "pink"
+
+            for i in range(24):
+                rect[hour].set_color(color)
+                hour += 1
+
+
+        ax.set_ylabel('Number of tweets')
+        ax.set_title('Hourly average tweets')
+        # x ticks and labels in steps of 4 hours for better readability
+        plt.xticks(np.arange(min(x), max(x) + 1, 4), rotation = 45)
+
+        ax.bar_label(rect)
+
+        patches = []
+        peachpuff_patch = mpatches.Patch(color='peachpuff', label='Monday')
+        patches.append(peachpuff_patch)
+        lightgreen_patch = mpatches.Patch(color='lightgreen', label='Tuesday')
+        patches.append(lightgreen_patch)
+        yellow_patch = mpatches.Patch(color='y', label='Wednesday')
+        patches.append(yellow_patch)
+        thistle_patch = mpatches.Patch(color='thistle', label='Thursday')
+        patches.append(thistle_patch)
+        lightsteelblue_patch = mpatches.Patch(color='lightsteelblue', label='Friday')
+        patches.append(lightsteelblue_patch)
+        light_blue_patch = mpatches.Patch(color='c', label='Saturday')
+        patches.append(light_blue_patch)
+        pink_patch = mpatches.Patch(color='pink', label='Sunday')
+        patches.append(pink_patch)
+        plt.legend(handles=patches, loc = "upper left")
+        plt.show()
 
     def daily_tweets(self):
+        """
+        Plots the average number of tweets posted on each weekday of a full week.
+        Plot will be a bar chart.
+        :return: None
+        """
+
         print("Average Tweets on a Monday: ", self.weekday_frequency.get(0))
         print("Average Tweets on a Tuesday: ", self.weekday_frequency.get(1))
         print("Average Tweets on a Wednesday: ", self.weekday_frequency.get(2))
@@ -322,11 +392,45 @@ class PlotterUebung6():
         fig, ax = plt.subplots()
         rect = ax.bar(x, counts, width, label=labels)
 
+        for j in range(7):
+            if j == 0:
+                color = "peachpuff"
+            elif j == 1:
+                color = "lightgreen"
+            elif j == 2:
+                color = "y"
+            elif j == 3:
+                color = "thistle"
+            elif j == 4:
+                color = "lightsteelblue"
+            elif j == 5:
+                color = "c"
+            elif j == 6:
+                color = "pink"
+
+            rect[j].set_color(color)
+
+        patches = []
+        peachpuff_patch = mpatches.Patch(color='peachpuff', label='Monday')
+        patches.append(peachpuff_patch)
+        lightgreen_patch = mpatches.Patch(color='lightgreen', label='Tuesday')
+        patches.append(lightgreen_patch)
+        yellow_patch = mpatches.Patch(color='y', label='Wednesday')
+        patches.append(yellow_patch)
+        thistle_patch = mpatches.Patch(color='thistle', label='Thursday')
+        patches.append(thistle_patch)
+        lightsteelblue_patch = mpatches.Patch(color='lightsteelblue', label='Friday')
+        patches.append(lightsteelblue_patch)
+        light_blue_patch = mpatches.Patch(color='c', label='Saturday')
+        patches.append(light_blue_patch)
+        pink_patch = mpatches.Patch(color='pink', label='Sunday')
+        patches.append(pink_patch)
+        plt.legend(handles=patches, loc="upper left")
+
         ax.set_ylabel('Number of tweets')
         ax.set_title('Daily average tweets')
         ax.set_xticks(x)
         ax.set_xticklabels(labels)
-
         ax.bar_label(rect)
         fig.tight_layout()
         plt.show()

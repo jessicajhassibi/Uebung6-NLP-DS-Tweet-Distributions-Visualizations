@@ -37,19 +37,19 @@ def get_most_frequent_words(tweets_list: list) -> list:
         for token in tokens_pos_attributes_list:
             token_text = token.get("text")
             if token.get("stop"):
-                #print("Don't count stop word: '" + token_text + "'")
+                # print("Don't count stop word: '" + token_text + "'")
                 pass
 
             elif token_text in string.punctuation:
-                #print("Don't count punctuation mark: ", token_text)
+                # print("Don't count punctuation mark: ", token_text)
                 pass
 
             elif token_text.isspace():
-                #print("Don't count white space.")
+                # print("Don't count white space.")
                 pass
 
             elif not token_text.isalpha():
-                #print("Don't count if not a word: ", token_text)
+                # print("Don't count if not a word: ", token_text)
                 pass
 
             else:
@@ -180,10 +180,10 @@ def most_frequent_wrongly_classified_hashtags(tweets_list: list) -> list:
 
         total_frequency = hashtags_frequency.get(hashtag)
         if total_frequency >= 3:
-            incorrect_percentage = incorrect_num/total_frequency
+            incorrect_percentage = incorrect_num / total_frequency
             most_frequent_hashtags_wrongly_classified.append(
                 (hashtag, total_frequency, incorrect_num, incorrect_percentage))
-            print("-> Tweets mit dem Hashtag", hashtag, "werden mit", round(incorrect_percentage*100),
+            print("-> Tweets mit dem Hashtag", hashtag, "werden mit", round(incorrect_percentage * 100),
                   "Prozent Wahrscheinlichkeit falsch klassifiziert.")
         else:
             break
@@ -294,47 +294,83 @@ def get_top10(frequency_dictionary: dict) -> list:
     return most_frequent_list
 
 
-def get_tweet_weekday_frequency(tweets_list: list) -> dict:
+def get_tweet_daily_hourly_frequency(tweets_list: list) -> (dict, dict):
     """
-    Returns the average tweet frequencies for each weekday as a list.
+    Fist dict returned holds the average tweet frequencies for each weekday
+    -> weekdays as keys and daily tweet numbers as values
+    Second dict returned holds the average number of tweets posted in each hour of a full week.
+    -> all hours as keys and daily tweet numbers as values
     :param tweets_list: list
-    :return: dictionary with weekdays as keys and daily tweet numbers as values
+    :return: (weekday_tweet_avg, hour_tweet_avg): tuple(dict, dict):
     """
-    # For the average tweet occcurences of each weekday:
-    day_keys = [0,1,2,3,4,5,6] # Monday = 0 ...Sunday = 6
-    weekday_tweet_avg = dict.fromkeys(day_keys)
 
-    days = {} # holds each mentioned day in tweet_list
+    tweets_days_hours = {}  # holds each day mentioned with hours list in tweet_list
     for tweet in tweets_list:
         date = tweet["created_at"]
-        date = date[:10] # just leave year, month, day value
-        day = datetime.datetime.fromisoformat(date)
+        date = datetime.datetime.fromisoformat(date.replace("Z", "+00:00"))
+        day = date.date()
+        hour = date.hour
+
         try:
-            current_day_frequency = days.get(day)
-            new_current_day_frequency = current_day_frequency + 1
-            days[day] = new_current_day_frequency
+            day_hours_list = tweets_days_hours.get(day)
+            new_hour_val = day_hours_list[hour] + 1
+            day_hours_list[hour] = new_hour_val
+            tweets_days_hours[day] = day_hours_list
+
         except Exception:
-            days[day] = 1
+            init_day_hours_list = []
+            for i in range(24):
+                init_day_hours_list.append(0)  # initialze num of tweets for each hour of new day with 0
+            init_day_hours_list[hour] = 1  # set tweet counter on the right hour of the day to 1
+            tweets_days_hours[day] = init_day_hours_list
 
-    # saving daily tweet numbers for each weekday
-    weekday_tweet_lists = {0: [],  # Monday = 0 ...
-                         1: [],
-                         2: [],
-                         3: [],
-                         4: [],
-                         5: [],
-                         6: []}  # Sunday = 6
+    weekday_tweet_lists = {0: [],  # save lists in a list for each weekday
+                           1: [],
+                           2: [],
+                           3: [],
+                           4: [],
+                           5: [],
+                           6: []}
 
-    # iterate through day dict and calc
-    for day in days:
+    for day in tweets_days_hours:
         weekday = day.weekday()
-        weekday_tweet_lists[weekday].append(days[day])
+        day_hours = tweets_days_hours.get(day)
+        # weekday_day_hours = weekday_tweet_lists.get(weekday)
+        # new_weekday_day_hours = [sum(x) for x in zip(day_hours, weekday_day_hours)]
+        weekday_tweet_lists[weekday].append(day_hours)
 
-    for weekday in range(7):
-        weekday_numbers = weekday_tweet_lists.get(weekday)
-        weekday_total = len(weekday_numbers) # total occurrences of certain weekday
-        # calc avg
-        weekday_avg = round(sum(weekday_numbers)/weekday_total)
-        weekday_tweet_avg[weekday] = weekday_avg
+    # For the average tweet occcurences of each hour:
+    hour_keys = range(168)
+    hour_tweet_avg = dict.fromkeys(hour_keys)
 
-    return weekday_tweet_avg
+    # For the average tweet occcurences of each weekday:
+    day_keys = range(7)  # Monday = 0 ...Sunday = 6
+    weekday_tweet_avg = dict.fromkeys(day_keys)
+
+    hour_of_168 = 0
+    for weekday in weekday_tweet_lists:
+        total_hour_tweets = []
+        for i in range(24):
+            total_hour_tweets.append(0)
+
+        weekday_lists = weekday_tweet_lists.get(weekday)
+        total_weekday_occurences = len(weekday_lists)
+        total_weekday_tweets = 0
+
+        for day_list in weekday_lists:
+            total_weekday_tweets += sum(day_list)
+
+            total_hour_tweets = [sum(x) for x in zip(day_list, total_hour_tweets)]
+
+        for hour in total_hour_tweets:
+            hour_avg = round(hour / total_weekday_occurences)
+            hour_tweet_avg[hour_of_168] = hour_avg
+            hour_of_168 += 1
+            print(hour_of_168)
+
+        average_tweets_weekday = round(total_weekday_tweets / total_weekday_occurences)
+        weekday_tweet_avg[weekday] = average_tweets_weekday
+
+
+    print(hour_tweet_avg)
+    return weekday_tweet_avg, hour_tweet_avg
