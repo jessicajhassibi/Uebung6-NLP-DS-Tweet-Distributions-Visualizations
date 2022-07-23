@@ -9,7 +9,7 @@ and then saved in "results/best_model.pt".
 
 ### Description of Classes and Files:
 
-### -> Run the program by running uebung6.py <-
+#### -> Run the program by running uebung6.py <-
 
 - preprocessor.py:
 Has already been used for preprocessing the files for uebung5.
