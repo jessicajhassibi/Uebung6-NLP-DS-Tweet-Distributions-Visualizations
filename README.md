@@ -27,6 +27,7 @@ which lie in the data folder. Preprocessed files are in "results".
   
   
 ### Results
+Location of results pdf: results folder
 #### Exercise 3: Plots of Tweet (Sentiment) Distributions
 ![](results/results_jpeg_format/result/Uebung6_Statistiken.jpg)
 ![](results/results_jpeg_format/result/Uebung6_Statistiken-2.jpg)
