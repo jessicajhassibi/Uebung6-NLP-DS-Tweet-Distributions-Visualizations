@@ -27,5 +27,14 @@ which lie in the data folder. Preprocessed files are in "results".
   
   
 ### Results
-![Link to plots for exercise 3 (in results folder)](results/Uebung6_Statistiken.pdf?raw=true "Optional Title")\
-![Link to console output for exercise 1 (in results folder)](results/Uebung6_Statistiken.pdf?raw=true "Optional Title")
+#### Exercise 3: Plots of Tweet (Sentiment) Distributions
+![](results/results_jpeg_format/result/Uebung6_Statistiken.jpg)
+![](results/results_jpeg_format/result/Uebung6_Statistiken-2.jpg)
+![](results/results_jpeg_format/result/Uebung6_Statistiken-3.jpg)
+![](results/results_jpeg_format/result/Uebung6_Statistiken-4.jpg)
+![](results/results_jpeg_format/result/Uebung6_Statistiken-5.jpg)
+![](results/results_jpeg_format/result/Uebung6_Statistiken-6.jpg)
+
+#### Exercise 1: Console Output
+![](results/results_jpeg_format/Uebung6_Output_Aufgabe1-bilder/0001.jpg)
+![](results/results_jpeg_format/Uebung6_Output_Aufgabe1-bilder/0002.jpg)
