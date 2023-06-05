@@ -1,7 +1,6 @@
 # Uebung6
-Author: Jessica Hassibi
 
-### NOTE:
+### NOTE FOR TUTOR:
 - The best feed forward model was created through exercise 5 (within the task of creating 20 random models and choosing the best one)
 and then saved in "results/best_model.pt".
 - The code for exercise 6 (uebung6.py) then just loads that model.
